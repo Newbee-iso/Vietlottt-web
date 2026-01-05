@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Dự Đoán & Gợi Ý Số Vietlott Hôm Nay – Thử Vận May Của Bạn</title>
+  <meta name="description" content="Công cụ dự đoán & gợi ý bộ số Vietlott Mega 6/45 và Power 6/55 hôm nay. Phân tích thống kê tần suất, kết hợp yếu tố may mắn, chỉ mang tính tham khảo.">
+
+  <style>
+    :root {
+      --primary: #d32f2f;
+      --secondary: #2c3e50;
+      --bg: #f4f6f8;
+      --text: #333;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    header {
+      background: #fff;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo-area h1 {
+      font-size: 18px;
+      margin: 0;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+    }
+    .logo-area span {
+      font-size: 12px;
+      color: #666;
+    }
+
+    nav { display: flex; gap: 8px; }
+    nav button {
+      padding: 6px 12px;
+      border: 1px solid #eee;
+      background: #fff;
+      color: #555;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    nav button:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    main {
+      max-width: 600px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+
+    .control-group { margin-bottom: 15px; }
+    label {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 6px;
+      display: block;
+      color: var(--secondary);
+    }
+    select, input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      background: #fafafa;
+    }
+    select:focus, input:focus {
+      border-color: var(--primary);
+      background: #fff;
+    }
+
+    button.generate-btn {
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      background: linear-gradient(135deg, #d32f2f, #b71c1c);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button.generate-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .result-area { margin-top: 30px; }
+    .result-header {
+      text-align: center;
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 15px;
+      letter-spacing: 1px;
+    }
+
+    .ticket-row {
+      background: #fff5f5;
+      border: 1px dashed #ffcdd2;
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .ball {
+      width: 34px;
+      height: 34px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 14px;
+      border: 2px solid #fff;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 13px;
+      color: #777;
+    }
+
+    @media (max-width: 480px) {
+      header { flex-direction: column; gap: 10px; }
+      nav { width: 100%; justify-content: space-between; }
+      nav button { flex: 1; font-size: 12px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo-area">
+    <h1>Dự Đoán & Gợi Ý Số Vietlott</h1>
+    <span>Thử vận may của bạn hôm nay 🍀</span>
+  </div>
+  <nav>
+    <button onclick="openDonate()">☕ Donate</button>
+    <button onclick="joinGroup()">💬 Group</button>
+    <button onclick="openFeedback()">⭐ Góp ý</button>
+  </nav>
+</header>
+
+<main>
+  <div class="control-group">
+    <label>Chọn loại vé</label>
+    <select id="game">
+      <option value="645">Mega 6/45</option>
+      <option value="655">Power 6/55</option>
+    </select>
+  </div>
+
+  <div class="control-group">
+    <label>Chiến thuật</label>
+    <select id="mode">
+      <option value="balanced">⚖️ Cân bằng</option>
+      <option value="safe">🛡️ An toàn</option>
+      <option value="risky">🔥 Mạo hiểm</option>
+    </select>
+  </div>
+
+  <div class="control-group">
+    <label>Số bộ gợi ý (tối đa 10)</label>
+    <input type="number" id="sets" value="5" min="1" max="10">
+  </div>
+
+  <div class="control-group">
+    <label>Seed may mắn (tuỳ chọn)</label>
+    <input type="text" id="seed" placeholder="Ngày sinh, số may mắn...">
+  </div>
+
+  <button class="generate-btn" id="btnGen" onclick="generate()">🔮 GỢI Ý NGAY</button>
+
+  <div class="result-area" id="resultArea"></div>
+</main>
+
+<footer>
+  <strong>⚠️ Miễn trừ trách nhiệm</strong><br>
+  Website sử dụng thuật toán thống kê để <strong>dự đoán & gợi ý tham khảo</strong>.<br>
+  Không cam kết trúng thưởng, không liên quan hoặc đại diện cho Vietlott.
+</footer>
+
+<script>
+  const API_URL = "https://vietlott-api-nb78.onrender.com/generate";
+
+  async function generate() {
+    const btn = document.getElementById("btnGen");
+    const resultArea = document.getElementById("resultArea");
+
+    const game = document.getElementById("game").value;
+    const mode = document.getElementById("mode").value;
+    let sets = parseInt(document.getElementById("sets").value);
+    const seed = document.getElementById("seed").value;
+
+    if (isNaN(sets) || sets < 1) sets = 1;
+    if (sets > 10) sets = 10;
+
+    btn.disabled = true;
+    btn.innerHTML = "⏳ Đang phân tích...";
+    resultArea.innerHTML = '<div style="text-align:center;color:#666">Đang xử lý dữ liệu thống kê...</div>';
+
+    let url = `${API_URL}?game=${game}&mode=${mode}&sets=${sets}`;
+    if (seed) url += `&seed=${encodeURIComponent(seed)}`;
+
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("Server error");
+      const data = await res.json();
+
+      let html = '<div class="result-header">✨ KẾT QUẢ GỢI Ý ✨</div>';
+      data.results.forEach(row => {
+        const balls = row.map(n => `<div class="ball">${n < 10 ? "0"+n : n}</div>`).join("");
+        html += `<div class="ticket-row">${balls}</div>`;
+      });
+      resultArea.innerHTML = html;
+
+    } catch {
+      resultArea.innerHTML = '<div style="color:red;text-align:center">Không thể kết nối server.</div>';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = "🔮 GỢI Ý NGAY";
+    }
+  }
+
+  function openDonate(){ alert("Donate: thêm QR sau"); }
+  function joinGroup(){ window.open("https://facebook.com", "_blank"); }
+  function openFeedback(){ window.open("https://forms.google.com", "_blank"); }
+</script>
+
+</body>
+</html>
